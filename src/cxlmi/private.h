@@ -23,6 +23,12 @@
 #define CXLMI_BUILD_BUG_MSG(c, msg) _Static_assert(!(c), msg)
 #define CXLMI_BUILD_BUG_ON(c) CXLMI_BUILD_BUG_MSG(c, "not expecting: " #c)
 
+
+#define CXL_PM_MBOX_READ_32(reg)       READ_REG_32(CXL_PM_OFFSET+reg)
+#define CXL_PM_MBOX_WRITE_32(reg,val)  WRITE_REG_32(CXL_PM_OFFSET+reg,val)
+#define CXL_PM_MBOX_READ_64(reg)       READ_REG_64(CXL_PM_OFFSET+reg)
+#define CXL_PM_MBOX_WRITE_64(reg,val)  WRITE_REG_64(CXL_PM_OFFSET+reg,val)
+
 /*
  * When the size of an allocated object is needed, and sizeof()
  * is not an option, use the best available mechanism to find it.
@@ -295,7 +301,8 @@ struct cxlmi_endpoint {
 	/* ioctl (primary mbox) */
 	int fd;
 	char *devname;
-
+	/*config space*/
+	uint8_t *config_space_mailbox;
 	bool has_fmapi;
 
 	struct list_node entry;
